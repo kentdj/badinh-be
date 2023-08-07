@@ -30,14 +30,8 @@ const User = sq.define("user", {
   lastName: {
     type: DataTypes.STRING,
   },
-
-
   fullName: {
     type: DataTypes.STRING,
-    get() {
-      const rawValue = this.getDataValue('firstName') + ' ' + this.getDataValue('lastName');
-      return rawValue;
-    }
   },
   nickName: {
     type: DataTypes.STRING,
@@ -55,6 +49,10 @@ const User = sq.define("user", {
 });
 
 User.beforeCreate(async (User, options) => {
+  // set fullname
+  User.setDataValue('fullName', User.firstName + ' ' + User.lastName)
+
+  // encrypt password
   return bcryptjs.hash(User.password, 10)
     .then(hash => {
       User.password = hash;

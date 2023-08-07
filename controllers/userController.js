@@ -6,9 +6,6 @@ const { CustomError } = require('../errors')
 
 const getAllUsers = async (req, res) => {
   const { email, nickName, password } = req.body;
-  console.log('🚀 ~ file: userController.js:9 ~ getAllUsers ~ req.body:', req.body)
-
-
 
   res.send('getAllUsers')
 }
