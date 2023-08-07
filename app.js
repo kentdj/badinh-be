@@ -16,6 +16,7 @@ app.use(cors())
 
 // router
 const authRouter = require('./routes/authRoutes')
+const userRouter = require('./routes/userRoutes')
 
 // middleware
 const notFoundMiddleware = require('./middleware/not-found');
@@ -31,6 +32,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/v1/auth', authRouter)
+app.use('/api/v1/user', userRouter)
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);

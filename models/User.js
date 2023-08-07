@@ -62,6 +62,17 @@ User.beforeCreate(async (User, options) => {
     });
 });
 
+User.beforeUpdate(async (User, options) => {
+  // encrypt password
+  return bcryptjs.hash(User.password, 10)
+    .then(hash => {
+      User.password = hash;
+    })
+    .catch(err => {
+      throw new Error();
+    });
+});
+
 User.prototype.validPassword = async function (canditatePassword) {
   const isMatch = await bcryptjs.compare(canditatePassword, this.password);
   return isMatch;
