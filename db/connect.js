@@ -1,7 +1,7 @@
 const { Sequelize } = require("sequelize");
 
-const sequelize = new Sequelize('badinh', 'postgres', 'daicanho1', {
-  host: 'localhost',
+const sequelize = new Sequelize(process.env.PGDATABASE, process.env.PGUSER, process.env.PGPASSWORD, {
+  host: process.env.PGHOST,
   dialect: 'postgres'
 });
 const testDbConnection = async () => {
@@ -15,4 +15,3 @@ const testDbConnection = async () => {
 
 
 module.exports = { sq: sequelize, testDbConnection };
-
