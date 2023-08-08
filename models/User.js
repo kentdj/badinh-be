@@ -23,6 +23,9 @@ const User = sq.define("user", {
   },
   phone: {
     type: DataTypes.STRING,
+    validate: {
+      len: [10, 15],
+    }
   },
   firstName: {
     type: DataTypes.STRING,
@@ -41,6 +44,9 @@ const User = sq.define("user", {
   },
   dob: {
     type: DataTypes.DATE,
+    validate: {
+      isDate: true
+    }
   },
   role: {
     type: DataTypes.ENUM("admin", "member", "user"),
@@ -58,7 +64,7 @@ User.beforeCreate(async (User, options) => {
       User.password = hash;
     })
     .catch(err => {
-      throw new Error();
+      throw new Error(err);
     });
 });
 
@@ -69,7 +75,7 @@ User.beforeUpdate(async (User, options) => {
       User.password = hash;
     })
     .catch(err => {
-      throw new Error();
+      throw new Error(err);
     });
 });
 
