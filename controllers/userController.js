@@ -1,4 +1,4 @@
-const User = require('../models/User')
+const Users = require('../models/Users')
 const { StatusCodes } = require('http-status-codes')
 const CustomError = require('../errors')
 const { attachCookiesToResponse, createTokenUser, checkPermissions } = require('../utils')
@@ -19,7 +19,7 @@ const userAttributes = [
 ]
 
 const getAllUsers = async (req, res) => {
-  const data = await User.findAndCountAll({
+  const data = await Users.findAndCountAll({
     attributes: userAttributes
   })
 
@@ -27,7 +27,7 @@ const getAllUsers = async (req, res) => {
 }
 
 const getSingleUser = async (req, res) => {
-  const data = await User.findOne({
+  const data = await Users.findOne({
     where: { id: req.params.id },
     attributes: userAttributes
   })
@@ -40,7 +40,7 @@ const getSingleUser = async (req, res) => {
 }
 
 const showCurrentUser = async (req, res) => {
-  const data = await User.findOne({
+  const data = await Users.findOne({
     where: { id: req.user.id },
     attributes: userAttributes
   })
@@ -50,11 +50,11 @@ const showCurrentUser = async (req, res) => {
 const updateUser = async (req, res) => {
   const { phone, firstName, lastName, nickName, avatar, dob } = req.body;
 
-  await User.update({ phone, firstName, lastName, nickName, avatar, dob }, {
+  await Users.update({ phone, firstName, lastName, nickName, avatar, dob }, {
     where: { id: req.user.id }
   });
 
-  const user = await User.findOne({
+  const user = await Users.findOne({
     where: { id: req.user.id },
     attributes: userAttributes
   })
@@ -71,7 +71,7 @@ const updateUserPassword = async (req, res) => {
   if (!oldPassword || !newPassword) {
     throw new CustomError.BadRequestError("Pls provide password")
   }
-  const user = await User.findOne({
+  const user = await Users.findOne({
     where: { id: req.user.id },
   })
   const isPasswordCorrect = await user.validPassword(oldPassword)
@@ -79,7 +79,7 @@ const updateUserPassword = async (req, res) => {
     throw new CustomError.UnauthenticatedError('Invalid credentials')
   }
 
-  await User.update({ password: newPassword }, {
+  await Users.update({ password: newPassword }, {
     where: { id: req.user.id },
     individualHooks: true
   });
