@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 const { sq } = require('../db/connect')
 const bcryptjs = require('bcryptjs');
 
-const User = sq.define("user", {
+const Users = sq.define("Users", {
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -39,8 +39,13 @@ const User = sq.define("user", {
   nickName: {
     type: DataTypes.STRING,
   },
+  image: {
+    type: DataTypes.STRING,
+    default: '/uploads/example.jpeg'
+  },
   avatar: {
     type: DataTypes.STRING,
+    default: '/uploads/example.jpeg'
   },
   dob: {
     type: DataTypes.DATE,
@@ -54,38 +59,34 @@ const User = sq.define("user", {
   }
 });
 
-User.beforeCreate(async (User, options) => {
+Users.beforeCreate(async (Users, options) => {
   // set fullname
-  User.setDataValue('fullName', User.firstName + ' ' + User.lastName)
+  Users.setDataValue('fullName', Users.firstName + ' ' + Users.lastName)
 
   // encrypt password
-  return bcryptjs.hash(User.password, 10)
+  return bcryptjs.hash(Users.password, 10)
     .then(hash => {
-      User.password = hash;
+      Users.password = hash;
     })
     .catch(err => {
       throw new Error(err);
     });
 });
 
-User.beforeUpdate(async (User, options) => {
+Users.beforeUpdate(async (Users, options) => {
   // encrypt password
-  return bcryptjs.hash(User.password, 10)
+  return bcryptjs.hash(Users.password, 10)
     .then(hash => {
-      User.password = hash;
+      Users.password = hash;
     })
     .catch(err => {
       throw new Error(err);
     });
 });
 
-User.prototype.validPassword = async function (canditatePassword) {
-  const isMatch = await bcryptjs.compare(canditatePassword, this.password);
+Users.prototype.validPassword = async function (canditatePassword) {
+  const isMatch = bcryptjs.compare(canditatePassword, this.password);
   return isMatch;
 }
 
-// User.sync({ force: true }).then(() => {
-//   console.log("User Model synced");
-// });
-
-module.exports = User;
+module.exports = Users;

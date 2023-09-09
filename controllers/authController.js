@@ -1,4 +1,4 @@
-const User = require('../models/User')
+const Users = require('../models/Users')
 const { StatusCodes } = require('http-status-codes')
 const CustomError = require('../errors');
 const { attachCookiesToResponse, createTokenUser } = require('../utils')
@@ -8,7 +8,7 @@ const register = async (req, res, next) => {
 
   const { email, nickName, password, firstName, lastName } = req.body;
 
-  const checkEmailExits = await User.findOne({
+  const checkEmailExits = await Users.findOne({
     where: { email: email }
   });
 
@@ -17,10 +17,10 @@ const register = async (req, res, next) => {
   }
 
   // first registered user is an admin
-  const isFirstAccount = await User.count({}) === 0
+  const isFirstAccount = await Users.count({}) === 0
   const role = isFirstAccount ? 'admin' : 'member'
 
-  const newUser = await User.create({
+  const newUser = await Users.create({
     nickName, email, password, role, firstName, lastName
   })
   const tokenUser = createTokenUser(newUser)
@@ -38,7 +38,7 @@ const login = async (req, res, next) => {
     throw new CustomError.BadRequestError("Pls provide email and password")
   }
 
-  const user = await User.findOne({
+  const user = await Users.findOne({
     where: { email: email }
   });
 
