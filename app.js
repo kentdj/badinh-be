@@ -30,6 +30,7 @@ const errorHandlerMiddleware = require('./middleware/error-handle');
 
 //connect db
 const { testDbConnection } = require('./db/connect');
+const migrations = require('./helpers/migrations');
 
 
 app.get('/', (req, res) => {
@@ -53,6 +54,7 @@ const port = process.env.PORT || 3000
 const start = async () => {
   try {
     await testDbConnection();
+    await migrations.syncDB()
     app.listen(port, console.log(`Server listening port ${port}...`))
   } catch (error) {
     console.log(error);

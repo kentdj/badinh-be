@@ -89,8 +89,4 @@ Users.prototype.validPassword = async function (canditatePassword) {
   return isMatch;
 }
 
-// Users.sync({ force: true }).then(() => {
-//   console.log(" --------- Users Model synced --------- ");
-// })
-
 module.exports = Users;

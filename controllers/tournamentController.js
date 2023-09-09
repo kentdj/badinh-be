@@ -50,10 +50,10 @@ const updateTournament = async (req, res) => {
     where: { id: req.params.id }
   });
 
-  const tournament = await Tournaments.findOne({
+  const data = await Tournaments.findOne({
     where: { id: req.params.id }
   })
-  res.status(StatusCodes.OK).json({ msg: "update success", tournament })
+  res.status(StatusCodes.OK).json({ msg: "update success", data })
 }
 
 const createTournament = async (req, res, next) => {
@@ -83,7 +83,7 @@ const createTournament = async (req, res, next) => {
     throw new CustomError.BadRequestError('Tournament name already exists');
   }
 
-  const newTournament = await Tournaments.create({
+  const data = await Tournaments.create({
     name,
     description,
     image,
@@ -92,7 +92,7 @@ const createTournament = async (req, res, next) => {
     end_date
   })
   // attachCookiesToResponse({ res, user: tokenUser })
-  res.status(StatusCodes.CREATED).json({ newTournament });
+  res.status(StatusCodes.CREATED).json({ data });
 }
 
 module.exports = {

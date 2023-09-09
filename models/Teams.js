@@ -34,8 +34,4 @@ const Teams = sq.define('Teams', {
   },
 });
 
-// Teams.sync({ force: true }).then(() => {
-//   console.log(" --------- Teams Model synced --------- ");
-// });
-
 module.exports = Teams;

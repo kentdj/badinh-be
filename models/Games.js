@@ -10,6 +10,18 @@ const Games = sq.define('Games', {
     autoIncrement: true,
     primaryKey: true,
   },
+  tournament_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  home_team_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  away_team_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
   home_team_score: {
     type: DataTypes.INTEGER,
   },
@@ -26,26 +38,20 @@ const Games = sq.define('Games', {
   },
 });
 
-Games.associate = () => {
-  Games.belongsTo(Tournaments, {
-    foreignKey: 'tournament_id',
-    allowNull: false
-  });
-  Games.belongsTo(Teams, {
-    as: 'homeTeam',
-    foreignKey: 'home_team_id',
-    allowNull: false
-  });
-  Games.belongsTo(Teams, {
-    as: 'awayTeam',
-    foreignKey: 'away_team_id',
-    allowNull: false
-  });
-};
-
-
-// Games.sync({ force: true }).then(() => {
-//   console.log(" --------- Games Model synced  --------- ");
-// });
+Games.belongsTo(Tournaments, {
+  foreignKey: 'tournament_id',
+  targetKey: 'id',
+  as: 'tournament',
+});
+Games.belongsTo(Teams, {
+  foreignKey: 'home_team_id',
+  targetKey: 'id',
+  as: 'homeTeam',
+});
+Games.belongsTo(Teams, {
+  foreignKey: 'away_team_id',
+  targetKey: 'id',
+  as: 'awayTeam',
+});
 
 module.exports = Games;

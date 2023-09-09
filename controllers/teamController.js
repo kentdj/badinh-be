@@ -52,10 +52,10 @@ const updateTeam = async (req, res) => {
     where: { id: req.params.id }
   });
 
-  const team = await Teams.findOne({
+  const data = await Teams.findOne({
     where: { id: req.params.id }
   })
-  res.status(StatusCodes.OK).json({ msg: "update success", team })
+  res.status(StatusCodes.OK).json({ msg: "update success", data })
 }
 
 const createTeam = async (req, res, next) => {
@@ -86,7 +86,7 @@ const createTeam = async (req, res, next) => {
     throw new CustomError.BadRequestError('Team name already exists');
   }
 
-  const newTeam = await Teams.create({
+  const data = await Teams.create({
     name,
     country,
     image,
@@ -94,7 +94,7 @@ const createTeam = async (req, res, next) => {
     coach,
     established_year
   })
-  res.status(StatusCodes.CREATED).json({ newTeam });
+  res.status(StatusCodes.CREATED).json({ data });
 }
 
 module.exports = {

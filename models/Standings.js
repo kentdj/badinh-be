@@ -10,6 +10,14 @@ const Standings = sq.define('Standings', {
     autoIncrement: true,
     primaryKey: true,
   },
+  tournament_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  team_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
   matches_played: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -32,18 +40,17 @@ const Standings = sq.define('Standings', {
   },
 });
 
-Standings.associate = () => {
-  Standings.belongsTo(Tournaments, {
-    foreignKey: 'tournament_id'
-  });
-  Standings.belongsTo(Teams, {
-    foreignKey: 'team_id'
-  });
-};
+Standings.belongsTo(Tournaments, {
+  foreignKey: 'tournament_id',
+  targetKey: 'id',
+  as: 'tournament',
+});
+Standings.belongsTo(Teams, {
+  foreignKey: 'team_id',
+  targetKey: 'id',
+  as: 'team',
+});
 
 
-// Standings.sync({ force: true }).then(() => {
-//   console.log(" --------- Standings Model synced --------- ");
-// });
 
 module.exports = Standings;

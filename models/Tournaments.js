@@ -34,8 +34,4 @@ const Tournaments = sq.define('Tournaments', {
   },
 });
 
-// Tournaments.sync({ force: true }).then(() => {
-//   console.log(" --------- Tournaments Model synced --------- ");
-// });
-
 module.exports = Tournaments;
